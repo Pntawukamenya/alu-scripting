@@ -1,19 +1,17 @@
 #!/usr/bin/python3
 """ module for function to return number of subreddit subscribers """
-import requests
-import sys
 
+import requests
 
 def number_of_subscribers(subreddit):
-    """  Args:
-        subreddit: subreddit name
-    Returns:
-        number of subscribers to the subreddit,
-        or 0 if subreddit requested is invalid"""
-    headers = {'User-Agent': 'xica369'}
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    url = f'https://www.reddit.com/r/{subreddit}/about.json'
+    headers = {
+        'User-Agent': 'My User Agent 1.0',
+    }
+    response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
-        return (response.json().get("data").get("subscribers"))
-    return (0)
+        data = response.json()
+        return data['data']['subscribers']
+    else:
+        return 0
