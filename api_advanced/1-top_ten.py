@@ -1,21 +1,26 @@
 #!/usr/bin/python3
-""" module for function to return top 10 hot posts of a given subreddit """
+# -*- coding: utf-8 -*-
+
+""" Returns the number of subscribers for a given subreddit. """
+
 import requests
-import sys
 
 
-def top_ten(subreddit):
-    """ Returns: top ten post titles
-        or None if queried subreddit is invalid """
-    headers = {'User-Agent': 'xica369'}
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    parameters = {'limit': 10}
-    response = requests.get(url, headers=headers, allow_redirects=False,
-                            params=parameters)
+def number_of_subscribers(subreddit):
+    """ Returns the number of subscribers for a given subreddit. """
 
+    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
+    headers = \
+        {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)\
+          AppleWebKit/537.36(KHTML, like Gecko) \
+         Chrome/90.0.4430.93 Safari/537.36'}
+    response = requests.get(url, headers=headers, allow_redirects=False)
     if response.status_code == 200:
-        titles_ = response.json().get('data').get('children')
-        for title_ in titles_:
-            print(title_.get('data').get('title'))
+        return response.json().get('data').get('subscribers')
     else:
-        print(None)
+        return 0
+
+
+if __name__ == '__main__':
+    print(number_of_subscribers)('programming')
+    print(number_of_subscribers)('not_a_valid_subreddit')
