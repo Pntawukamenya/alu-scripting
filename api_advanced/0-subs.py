@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+""" Returns the number of subscribers for a given subreddit. """
+
 import requests
 
+
 def number_of_subscribers(subreddit):
-    """
-    Query the Reddit API and return the number of subscribers for a given subreddit.
-    If an invalid subreddit is given, the function should return 0.
-    """
-    headers = {
+    """ Returns the number of subscribers for a given subreddit. """
+
+headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)\
           AppleWebKit/537.36(KHTML, like Gecko) \
          Chrome/90.0.4430.93 Safari/537.36'
