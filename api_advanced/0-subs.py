@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-""" Returns the number of subscribers for a given subreddit. """
+"""The number of subscribers for a given subreddit."""
 
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """ Returns the number of subscribers for a given subreddit. """
-
+    """Return the number of subscribers for a given subreddit."""
     url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
     headers = \
         {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)\
@@ -24,4 +23,3 @@ def number_of_subscribers(subreddit):
 if __name__ == '__main__':
     print(number_of_subscribers)('programming')
     print(number_of_subscribers)('not_a_valid_subreddit')
-
