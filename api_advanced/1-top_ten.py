@@ -1,26 +1,43 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
-""" Returns the number of subscribers for a given subreddit. """
-
+"""Queries the Reddit API and
+prints the titles of the first
+10 hot posts listed for a given
+subreddit.
+"""
 import requests
 
 
-def number_of_subscribers(subreddit):
-    """ Returns the number of subscribers for a given subreddit. """
+def top_ten(subreddit):
+    """Prints the titles of the first
+    10 hot posts listed for a given
+    subreddit.
+    """
+    # Set the Default URL strings
+    base_url = 'https://www.reddit.com'
+    api_uri = '{base}/r/{subreddit}/hot.json'.format(base=base_url,
+                                                     subreddit=subreddit)
 
-    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
-    headers = \
-        {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)\
-          AppleWebKit/537.36(KHTML, like Gecko) \
-         Chrome/90.0.4430.93 Safari/537.36'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    if response.status_code == 200:
-        return response.json().get('data').get('subscribers')
+    # Set an User-Agent
+    user_agent = {'User-Agent': 'Python/requests'}
+
+    # Set the Query Strings to Request
+    payload = {'limit': '10'}
+
+    # Get the Response of the Reddit API
+    res = requests.get(api_uri, headers=user_agent,
+                       params=payload, allow_redirects=False)
+
+    # Checks if the subreddit is invalid
+    if res.status_code in [302, 404]:
+        print('None')
     else:
-        return 0
+        res_json = res.json()
 
+        if res_json.get('data') and res_json.get('data').get('children'):
+            # Get the 10 hot posts of the subreddit
+            hot_posts = res_json.get('data').get('children')
 
-if __name__ == '__main__':
-    print(number_of_subscribers)('programming')
-    print(number_of_subscribers)('not_a_valid_subreddit')
+            # Print each hot post title
+            for post in hot_posts:
+                if post.get('data') and post.get('data').get('title'):
+                    print(post.get('data').get('title'))
